@@ -1,7 +1,7 @@
-#LeetCode Practice Archive
+# LeetCode Practice Archive
 ## Main Language
 - Python 3
 
-## Refernce
+## Reference
 - LeetCode: <https://leetcode.com/problemset/all/>
 

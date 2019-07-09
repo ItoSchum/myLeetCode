@@ -26,7 +26,7 @@ class Solution:
 # Runtime: 3364 ms, faster than 36.49% of Python3 online submissions for Longest Palindromic Substring.
 # Memory Usage: 21.7 MB, less than 12.04% of Python3 online submissions for Longest Palindromic Substring.
 
-# TC: O(n), n = str_len
+# TC: O(n^2), n = str_len
 # SC: O(n^2), n = str_len 
 
 

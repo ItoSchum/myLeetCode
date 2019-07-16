@@ -25,5 +25,5 @@ class Solution:
 # Runtime: 112 ms, faster than 69.70% of Python3 online submissions for 3Sum Closest.
 # Memory Usage: 13.2 MB, less than 47.47% of Python3 online submissions for 3Sum Closest.
 
-# TC: O(n*log(2)n + n*(n/2)!), n = nums_len
+# TC: O(n*log2(n) + n*(n/2)!), n = nums_len
 # SC: O(1)

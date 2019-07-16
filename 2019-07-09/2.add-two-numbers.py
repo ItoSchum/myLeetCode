@@ -43,6 +43,7 @@ class Solution:
 # Runtime: 76 ms, faster than 79.47% of Python3 online submissions for Add Two Numbers.
 # Memory Usage: 13.3 MB, less than 23.35% of Python3 online submissions for Add Two Numbers.
 
-
+# TC: O(n), n = length of the node list
+# SC: O(n), n = length of the node list
 
         

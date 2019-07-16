@@ -22,5 +22,8 @@ class Solution:
 # Runtime: 44 ms, faster than 49.75% of Python3 online submissions for Generate Parentheses.
 # Memory Usage: 13.5 MB, less than 26.55% of Python3 online submissions for Generate Parentheses.
 
-# TC: O(4^n / sqrt(n)), n = given n
-# SC: O(4^n / sqrt(n))
+# TC: O(2n! / (n!)^2 ), n = given n
+# SC: O(2n! / (n!)^2 )
+
+# SC = TC = C(2n, n) = 2n! / (n!)^2 
+# C(2n, n) = 2n! / [n * (2n - n)!] = 2n! / (n! * n!) = 2n! / (n!)^2 

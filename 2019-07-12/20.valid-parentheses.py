@@ -28,4 +28,4 @@ class Solution:
 # Memory Usage: 13.1 MB, less than 90.28% of Python3 online submissions for Valid Parentheses.
 
 # TC: O(n), n = len(s)
-# SC: O(1)
+# SC: O(n), n = len(s)

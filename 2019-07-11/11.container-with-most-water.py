@@ -1,12 +1,12 @@
 class Solution:
     def maxArea(self, height: List[int]) -> int:
-        height_amount = len(height)
+        height_len = len(height)
         head = 0
-        tail = height_amount - 1        
+        tail = height_len - 1        
 
         max_area = 0
 
-        for i in range(height_amount):
+        for i in range(height_len):
             
             width = abs(tail - head)
 

@@ -62,30 +62,37 @@ class Solution:
         """
         Do not return anything, modify root in-place instead.
         """
-        self.error_node1 = None
-        self.error_node2 = None
-        self.inorder_traverse(root, None)
-        self.swap()
+        self.prev = None
+        self.error_nodes = []
+        self.inorder_traverse(root)
+        self.swap_error_nodes()
         
-    def inorder_traverse(self, curr: TreeNode, prev: TreeNode) -> None:     
+    def inorder_traverse(self, curr: TreeNode) -> None:     
         if curr == None: 
             return
         
-        self.inorder_traverse(curr.left, prev)
+        self.inorder_traverse(curr.left)
           
-        if prev != None and curr.val < prev.val:
-            # print("Swap curr %d with prev %d" % (curr.val, prev.val) ) 
-            if self.error_node1 == None:
-                self.error_node1 = prev
-            self.error_node2 = curr
+        if self.prev != None and curr.val < self.prev.val:
+            # print("Swap curr %d with self.prev %d" % (curr.val, self.prev.val) ) 
+            if len(self.error_nodes) == 0:
+                self.error_nodes.append(self.prev)
             
-        self.inorder_traverse(curr.right, curr)
+            if len(self.error_nodes) > 1:
+                self.error_nodes.remove(self.error_nodes[1])
+            self.error_nodes.append(curr)
+            
+        self.prev = curr
+        self.inorder_traverse(curr.right)
         
         
-    def swap(self) -> None:
-        temp = self.error_node1
-        self.error_node1 = self.error_node2
-        self.error_node2 = temp
+    def swap_error_nodes(self) -> None:
+        temp = self.error_nodes[0].val
+        self.error_nodes[0].val = self.error_nodes[1].val
+        self.error_nodes[1].val = temp
         
 # @lc code=end
 
+# n = node number
+# Time: O(n)
+# Space: O(1)

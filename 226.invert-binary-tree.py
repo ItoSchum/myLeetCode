@@ -58,7 +58,7 @@ class TreeNode:
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
         if root == None:
-            return
+            return root
         
         temp = root.left
         root.left = root.right

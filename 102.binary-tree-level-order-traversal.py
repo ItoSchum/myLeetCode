@@ -60,29 +60,62 @@ class TreeNode:
 
 class Solution:
     
-    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+    # def levelOrder(self, root: TreeNode) -> List[List[int]]:
         
-        level_order = []
-        next_level = []
-        if root == None:
-            return level_order
-        next_level.append(root)
-        
-        while len(next_level) > 0:
-            size = len(next_level)
-            sub = []
-            for i in range(size):
-                node = next_level[i]
-                sub.append(node.val)
-                if node.left:
-                    next_level.append(node.left)
-                if node.right:
-                    next_level.append(node.right)
-            # after move children node into queue, we only need children parts in our queue:
-            next_level = next_level[size:]
-            level_order.append(sub)
+    #     level_order = []
+    #     if root == None:
+    #         return level_order
+    #     next_level = [root]
+            
+    #     while len(next_level) > 0:
+    #         size = len(next_level)
+    #         sub = []
+    #         for i in range(size):
+    #             node = next_level[i]
+    #             sub.append(node.val)
+    #             if node.left != None:
+    #                 next_level.append(node.left)
+    #             if node.right != None:
+    #                 next_level.append(node.right)
 
-        return level_order
+    #         next_level = next_level[size:]
+    #         level_order.append(sub)
+
+    #     return level_order
+    
+    
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if root == None:
+            return []
+        
+        global_level_order = [ [root.val] ]
+        curr_level = [root]
+        
+        while len(curr_level) > 0:
+            children = []
+            for node in curr_level:
+                if node != None:
+                    children.append(node.left)
+                    children.append(node.right)
+
+            curr_level = children
+            val_list = self.nodeList_to_valueList(children)
+            if len(val_list) > 0:
+                global_level_order.append(val_list)     
+            
+        return global_level_order
+    
+    def nodeList_to_valueList(self, node_list: List[TreeNode]):
+        val_list = []
+        for node in node_list:
+            if node != None:
+                val_list.append(node.val)
+
+        return val_list
+            
         
 # @lc code=end
 
+# n = node number
+# Time: O(n)
+# Space: O(n)

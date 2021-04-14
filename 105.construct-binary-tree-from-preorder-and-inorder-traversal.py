@@ -77,7 +77,7 @@ class Solution:
         root = self.buildSubTree(0, len(preorder) - 1, 0, len(inorder) - 1)
         return root 
 
-    def buildSubTree(self, preStart, preEnd, inStart, inEnd) -> TreeNode:
+    def buildSubTree(self, preStart: int, preEnd: int, inStart: int, inEnd: int) -> TreeNode:
         
         # if out of range
         if preStart > preEnd or inStart > inEnd:
@@ -107,4 +107,4 @@ class Solution:
 
 # n = node amount
 # Time: O( n )
-# Storage: O( log(n) )
+# Storage: O( n/2 )

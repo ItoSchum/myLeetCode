@@ -77,31 +77,36 @@
  */
 
 // @lc code=start
+#include <iostream>
 #include <vector>
+#include <queue>
 
 class Solution {
 public:
-    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+    std::vector<int> maxSlidingWindow(std::vector<int>& nums, int k) {
         // vector recording max int of each window
         std::vector<int> max_vec;
+        std::priority_queue<std::pair<int,int> > val_seq_pq;
         
+        // When nums is empty
         if (nums.empty() == true) { 
             return max_vec; 
         }
-        if (nums.size() <= k) {
-            int max = nums[0];
-            for (int i = 0; i < nums.size(); ++i) {
-                if (nums[i] > max) { max = nums[i]; }
-            }
-            max_vec.push_back(max);
-            return max_vec;
+        
+        // When window size k < size of nums
+        for (int i = 0; i < k; ++i) {
+            val_seq_pq.push( {nums[i], i} );
         }
-        for (int i = 0; i < nums.size() - (k - 1); ++i) {
-            int max = nums[i];
-            for (int j = i; j < i + k; ++j) {
-                if (nums[j] > max) { max = nums[j]; }
+        max_vec.push_back(val_seq_pq.top().first);
+
+        int offset = 0;
+        for (int i = k; i < nums.size(); ++i) {
+            val_seq_pq.push( {nums[i], i} );
+            while(val_seq_pq.top().second <= offset) {
+                val_seq_pq.pop();
             }
-            max_vec.push_back(max);
+            max_vec.push_back(val_seq_pq.top().first);
+            offset++;
         }
         return max_vec;
     }

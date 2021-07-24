@@ -43,10 +43,16 @@
 // @lc code=start
 class Solution {
 public:
-    // int** memo;
+    int** memo;
     
     int numTrees(int n) {
-        // memo = new int[n + 1][n + 1];
+        memo = new int*[n + 1];
+        for (int i = 0; i < n + 1; ++i) {
+            memo[i] = new int[n + 1];
+            for (int j = 0; j < n + 1; ++j) {
+                memo[i][j] = 0;
+            }
+        }
         return count(1, n);
     }
 
@@ -54,18 +60,24 @@ public:
         if (lower_bound >= upper_bound) {
             return 1;
         }
+        if (memo[lower_bound][upper_bound] != 0) {
+            return memo[lower_bound][upper_bound];
+        }
+
         int res = 0;
         for (int i = lower_bound; i <= upper_bound; ++i) {
             int left = count(lower_bound, i - 1);
             int right = count(i + 1, upper_bound);
             res += left * right;
         }
+        memo[lower_bound][upper_bound] = res;
+
         return res;
     }
 };
 // @lc code=end
 
 // n = node number
-// Time: O()
-// Space: O()
+// Time: O(2^log2(n) )
+// Space: O(n^2)
 

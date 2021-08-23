@@ -85,7 +85,7 @@ public:
         int matrix_length = board[0].size();
         
         for(int row = 0; row < matrix_height; ++row) {
-            if (row > 0 && row < matrix_height) {
+            if (row > 0 && row < matrix_height - 1) {
                 if (board[row][0] == EXPECTED_SIGN) { 
                     dfsMarkUpInvalidPoint(board, row, 0);
                 }
@@ -109,7 +109,7 @@ public:
                 }
                 if (board[row][col] == TEMP_SIGN) {
                     board[row][col] = EXPECTED_SIGN;
-                    std::cout << "!";
+                    
                 }
             }
         }
@@ -118,3 +118,7 @@ public:
 };
 // @lc code=end
 
+// m = matrix height (rows)
+// n = matrix length (columns) 
+// Time: O(mn)
+// Space: O(mn)

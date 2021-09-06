@@ -164,3 +164,6 @@ public:
 
 // @lc code=end
 
+// n = num amount, k = window size
+// Time: O(n)
+// Space: O(k)

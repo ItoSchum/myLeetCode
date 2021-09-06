@@ -80,13 +80,47 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <list>
+
+class MonotonicQueue {
+public:
+    void push(int newVal) {
+        // Remove all elements less than newVal (front to back)
+        // Then insert the new value to the front
+        while (!_queue.empty() && newVal > _queue.front()) {
+            _queue.pop_front();
+        }
+        // ALTERNATIVE: Using iterator
+        // std::list<int>::iterator itr = _queue.begin();
+        // while (itr != _queue.end() && newVal > *itr) {
+        //     itr = _queue.erase(itr);
+        // }
+
+        // insert newVal to the front
+        _queue.push_front(newVal);
+    }
+    // Pop the corresponding val if it is the max
+    void pop(int valToRemove) {
+        if (_queue.back() == valToRemove) {
+            _queue.pop_back();
+        }
+    }
+    // return the last element which is the max
+    int max() {
+        return _queue.back();
+    }
+
+private:
+    std::list<int> _queue;
+};
 
 class Solution {
 public:
     std::vector<int> maxSlidingWindow(std::vector<int>& nums, int k) {
         // vector recording max int of each window
         std::vector<int> max_vec;
-        std::priority_queue<std::pair<int,int> > val_seq_pq;
+        // ALTERNATIVE: Using priority queue
+        // std::priority_queue<std::pair<int,int> > val_seq_pq;
         
         // When nums is empty
         if (nums.empty() == true) { 
@@ -94,22 +128,39 @@ public:
         }
         
         // When window size k < size of nums
-        for (int i = 0; i < k; ++i) {
-            val_seq_pq.push( {nums[i], i} );
-        }
-        max_vec.push_back(val_seq_pq.top().first);
-
-        int offset = 0;
-        for (int i = k; i < nums.size(); ++i) {
-            val_seq_pq.push( {nums[i], i} );
-            while(val_seq_pq.top().second <= offset) {
-                val_seq_pq.pop();
+        if (nums.size() < k) {
+            int currNum = nums[0];
+            for (int i = 0; i < k; ++i) {
+                if (nums[i] > currNum) { currNum = nums[i]; }
             }
-            max_vec.push_back(val_seq_pq.top().first);
-            offset++;
+            max_vec.push_back(currNum);
+            return max_vec;
+        }
+
+        // ALTERNATIVE: Using priority queue
+        // int offset = 0;
+        // for (int i = k; i < nums.size(); ++i) {
+        //     val_seq_pq.push( {nums[i], i} );
+        //     while(val_seq_pq.top().second <= offset) {
+        //         val_seq_pq.pop();
+        //     }
+        //     max_vec.push_back(val_seq_pq.top().first);
+        //     offset++;
+        // }
+
+        MonotonicQueue monotonicQueue;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (i < k - 1) {
+                monotonicQueue.push(nums[i]);
+            } else {
+                monotonicQueue.push(nums[i]);
+                max_vec.push_back(monotonicQueue.max());
+                monotonicQueue.pop(nums[i - k + 1]);
+            }
         }
         return max_vec;
     }
 };
+
 // @lc code=end
 

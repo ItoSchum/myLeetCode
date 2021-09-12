@@ -77,9 +77,9 @@
 class Solution {
 public:
     Solution() {
-        bracketLtoR['('] = ')';
-        bracketLtoR['['] = ']';
-        bracketLtoR['{'] = '}';
+        openingToClosing['('] = ')';
+        openingToClosing['['] = ']';
+        openingToClosing['{'] = '}';
     }
     
     bool isValid(string s) {
@@ -90,23 +90,23 @@ public:
         if ( (s.size() & 1) == 1) { return false; }
         
         // Using stack
-        // std::stack<char> parenthesisStack;
-        // for (int i = 0; i < s.size(); ++i) {
-        //     if (!parenthesisStack.empty()
-        //            && bracketLtoR.find(parenthesisStack.top()) != bracketLtoR.end()
-        //            && bracketLtoR[parenthesisStack.top()] == s[i]) {
-        //         parenthesisStack.pop();
-        //     } else {
-        //         parenthesisStack.push(s[i]);
-        //     }
-        // }
-        // if (parenthesisStack.empty()) {
-        //     return true;
-        // }
-        // return false;
+        std::stack<char> parenthesisStack;
+        for (int i = 0; i < s.size(); ++i) {
+            if (!parenthesisStack.empty()
+                   && openingToClosing.find(parenthesisStack.top()) != openingToClosing.end()
+                   && openingToClosing[parenthesisStack.top()] == s[i]) {
+                parenthesisStack.pop();
+            } else {
+                parenthesisStack.push(s[i]);
+            }
+        }
+        if (parenthesisStack.empty()) {
+            return true;
+        }
+        return false;
 
         // Not using stack
-        return check(s, s.size());
+        // return check(s, s.size());
 
     }
 
@@ -115,42 +115,49 @@ public:
         // if string length == 0 -> valid
         if (substrLen == 0) { return true; }
         // If string length is odd -> invalid
-        if ( (substrLen & 1) == 1) { return false; }
+        if (substrLen & 1) { return false; }
         // If ) or ] or } at the first position -> invalid
-        if (bracketLtoR.find( substr[0] ) == bracketLtoR.end()) {
+        if (openingToClosing.find( substr[0] ) == openingToClosing.end()) {
             return false;
         }
 
         int currPos = 1;
         int sameOpeningCount = 0;
+        char expectedClosing = openingToClosing[ substr[0] ];
 
-        // Handle the same opening brackets e.g. ((( )))
-        for (int currPos = 0; currPos < substrLen; ++currPos) {
-            if (substr[currPos] == substr[0]) { sameOpeningCount++; }
-            if (substr[currPos] == bracketLtoR[ substr[0] ]) {
-                // Found the closing bracket for substr[0] 
+        // Handle the same opening brackets e.g. (([]( )))
+        for (currPos = 1; currPos < substrLen; ++currPos) {
+            // If find nested opening bracket
+            if (substr[currPos] == substr[0]) { 
+                sameOpeningCount++; 
+            }
+            // If find closing bracket
+            else if (substr[currPos] == expectedClosing) {
                 if (sameOpeningCount == 0) { break; }
-                // Found the closing bracket for some inner bracket
                 else { sameOpeningCount--; }
             }
         }
+        
         // If reahced out of the range (consider it should have did the 'break' OP)
         // -> closing bracket not found
-        if (currPos == substrLen) { return false; }
+        if (currPos == substrLen) { 
+            return false; }
         
         // If no gap between substr[currPos] and substr[0]
-        // keep checking
         if (currPos == 1) {
+            std::cout << "Closing bracket contiguous" << std::endl;
             return check(&substr[2], substrLen - 2);
+        
+        // If there is gap 0...currPos...(substrLen - 1)
         } else {
-            return check(&substr[currPos - 1], currPos - 1) 
-                && check(&substr[currPos + 1], substrLen - currPos - 1);
+            std::cout << "Closing bracket non-contiguous" << std::endl;
+            return check(&substr[1], currPos - 1) 
+                && check(&substr[currPos + 1], substrLen - 1 - currPos);
         }
-
     }
 
 private:
-    std::unordered_map<char, char> bracketLtoR;
+    std::unordered_map<char, char> openingToClosing;
 
     void printStack(std::stack<char> stackToPrint) {
         while (!stackToPrint.empty()) {

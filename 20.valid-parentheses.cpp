@@ -90,20 +90,21 @@ public:
         if ( (s.size() & 1) == 1) { return false; }
         
         // Using stack
-        std::stack<char> parenthesisStack;
+        std::stack<char> bracketStack;
         for (int i = 0; i < s.size(); ++i) {
-            if (!parenthesisStack.empty()
-                   && openingToClosing.find(parenthesisStack.top()) != openingToClosing.end()
-                   && openingToClosing[parenthesisStack.top()] == s[i]) {
-                parenthesisStack.pop();
+            if (!bracketStack.empty() 
+                && openingToClosing.find(bracketStack.top()) != openingToClosing.end()
+                && openingToClosing[bracketStack.top()] == s[i]) {
+                bracketStack.pop();
             } else {
-                parenthesisStack.push(s[i]);
+                bracketStack.push(s[i]);
             }
         }
-        if (parenthesisStack.empty()) {
+        if (bracketStack.empty()) {
             return true;
+        } else {
+            return false;
         }
-        return false;
 
         // Not using stack
         // return check(s, s.size());
@@ -170,4 +171,8 @@ private:
 // n = parenthesis number
 // Time: O(n)
 // Space: O(n/2)
+
+// 91/91 cases passed (0 ms)
+// Your runtime beats 100 % of cpp submissions
+// Your memory usage beats 10.04 % of cpp submissions (6.4 MB)
 

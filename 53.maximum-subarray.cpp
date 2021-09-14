@@ -66,14 +66,11 @@ public:
 
         for (int i = 0; i < nums.size(); ++i) {
             localMax += nums[i];
-            // Accumulate the nums only when the current localMax >= 0
-            if (localMax >= 0) {
-                globalMax = std::max(globalMax, localMax);
+            globalMax = std::max(localMax, globalMax);
             // reset the localMax, for searching next positive localMax
-            } else {
-                localMax = 0;
-            }
+            if (localMax < 0) { localMax = 0; }
         }
+        return globalMax;
         
         // ALTERNATIVE:
         // for (int i = 0; i < nums.size(); ++i) {

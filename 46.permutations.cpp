@@ -50,6 +50,7 @@ public:
         return all_solutions;
     }
 
+private:
     void subPermute(std::vector<int>& nums, int begin_index, 
             std::vector<std::vector<int> >& all_solutions) {
         
@@ -66,7 +67,6 @@ public:
         }
     }
 
-private:
     void printSolution(const std::vector<int>& solution) {
         std::vector<int>::const_iterator itr;
         printf("Current solutoin: ");

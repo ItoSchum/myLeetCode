@@ -102,55 +102,51 @@ public:
         serializeStep(root);
         std::string serializedStr;
         std::list<std::string>::iterator itr;
-        for (itr = serializedStrList.begin(); itr != serializedStrList.end(); ++itr) {
+        for (itr = serializedStrList.begin(); itr != serializedStrList.end(); itr++) {
             serializedStr.append(*itr);
             serializedStr.append(SEPARATOR);
         }
         return serializedStr;
     }
 
-    void serializeStep(TreeNode* node) {
-        if (node == nullptr) {
+    void serializeStep(TreeNode* root) {
+        if (root == nullptr) {
             serializedStrList.push_back(NULL_NODE);
             return;
         }
-        serializedStrList.push_back(std::to_string(node->val) );
-        serializeStep(node->left);
-        serializeStep(node->right);
+        serializedStrList.push_back(std::to_string(root->val) );
+        serializeStep(root->left);
+        serializeStep(root->right);
     }
 
     // Decodes your encoded data to tree.
     TreeNode* deserialize(std::string data) {
-        std::stringstream strStream(data);
         std::list<std::string> strList;
-        
-        while (strStream.good()) {
-            std::string substr;
-            std::getline(strStream, substr, ',');
-            strList.push_back(substr);
-        }
-        return deserializeStep(strList);
+        std::stringstream strStream(data);
 
+        while(strStream.good()) {
+            std::string singleVal;
+            std::getline(strStream, singleVal, ',');
+            strList.push_back(singleVal);
+        }
+        return deserizlizeStep(strList);
     }
 
-    TreeNode* deserializeStep(std::list<std::string> &strList) {
-        if (strList.size() < 1) {
+    TreeNode* deserizlizeStep(std::list<std::string>& valList) {
+        if (valList.size() < 1) {
             return nullptr;
         }
-        std::string strVal = strList.front();
-        strList.pop_front();
-        
         TreeNode* currNodePtr;
-        if (strVal == "null") {
+        std::string currVal = valList.front();
+        valList.pop_front();
+        if (currVal == NULL_NODE) {
             return nullptr;
-        } else {
-            currNodePtr = new TreeNode(std::atoi(strVal.c_str()) );
-            // std::cout << currNodePtr->val << std::endl;
         }
-        currNodePtr->left = deserializeStep(strList);
-        currNodePtr->right = deserializeStep(strList);
+        currNodePtr = new TreeNode(std::stoi(currVal) );
+        currNodePtr->left = deserizlizeStep(valList);
+        currNodePtr->right = deserizlizeStep(valList);
         return currNodePtr;
-    }
+    }   
 };
 
 // Your Codec object will be instantiated and called as such:

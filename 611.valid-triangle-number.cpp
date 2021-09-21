@@ -52,16 +52,21 @@
 class Solution {
 public:
     int triangleNumber(vector<int>& nums) {
+        // If not enough nums
+        if (nums.size() < 3) {
+            return 0;
+        }
+        // Sort the nums for selecting
         std::sort(nums.begin(), nums.end());
+        // Scan the nums
         int validCount = 0;
-        for (int i = 0; i < nums.size(); ++i) {
-            for (int j = i + 1; j < nums.size(); ++j) {
-                for (int k = j + 1; k < nums.size(); ++k) {
-                    if (nums[k] < nums[i] + nums[j] 
-                        && nums[k] - nums[j] < nums[i]) {
-                        validCount++;
-                    }
+        for (int i = 0; i < nums.size() - 2; ++i) {
+            int k = i + 2;
+            for (int j = i + 1; nums[i] > 0 && j < nums.size() - 1; ++j) {
+                while (k < nums.size() && nums[i] + nums[j] > nums[k]) { 
+                    k++;
                 }
+                validCount += k - j - 1;
             }
         }
         return validCount;
@@ -69,3 +74,6 @@ public:
 };
 // @lc code=end
 
+// n = size of nums
+// Time: O(n^2)
+// Space: O(log2(n)) // for sorting

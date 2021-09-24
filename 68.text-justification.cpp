@@ -102,43 +102,88 @@
 #include <iostream>
 #include <vector>
 
-#define SPACE " "
-
 class Solution {
 public:
     std::vector<std::string> fullJustify(std::vector<std::string>& words, int maxWidth) {
         std::vector<std::string> justifiedWords;
         std::vector<std::string> currLineWords;
         int currWidth = 0;
+        std::string currLinePadded;
 
         for (int i = 0; i < words.size(); ++i) {
-            if (words[i].size() + currWidth + 1 < maxWidth) {
-                if (currWidth > 0) { currWidth += 1; }
-                currWidth += words[i].size();
-                currLineWords.push_back(words[i]);
-            } else {
-                justifiedWords.push_back(paddingSingleLine(currLineWords, maxWidth) );
+            // If exceeded the maxwidth
+            if (checkNotExceedingMaxwidth(currWidth, words[i], maxWidth) == false) {
+                paddingSingleLineEvenly(currLineWords, maxWidth, currLinePadded);
+                justifiedWords.push_back(currLinePadded);
                 currWidth = 0;
-                i--;
+                currLinePadded = "";
+                currLineWords.clear();
+            }
+            // If not, keep appending words to the current line
+            if (currWidth > 0) { currWidth += 1; }
+            currWidth += words[i].size();
+            currLineWords.push_back(words[i]);
+
+            if (i == words.size() - 1) {
+                paddingSingleLineLeftJustified(currLineWords, maxWidth, currLinePadded);
+                justifiedWords.push_back(currLinePadded);
             }
         }
         return justifiedWords;
     }
 
-    std::string paddingSingleLine(std::vector<std::string> wordVec, int maxWidth) {
-        int wordLengthSum = 0;
-        for (int i = 0; i < wordVec.size(); ++i) {
-            wordLengthSum += wordVec[i].size();
+    bool checkNotExceedingMaxwidth(int currWidth, const std::string& nextWord, int maxWidth) {
+        if (currWidth > 0) {
+            return (currWidth + 1 + nextWord.size() <= maxWidth);
+        } else {
+            return (nextWord.size() <= maxWidth);
         }
-        int eachSpacingWidth = (maxWidth - wordLengthSum) / (wordVec.size() - 1);
-        int lastSpacingWidth = maxWidth - eachSpacingWidth * (wordVec.size() - 1);
-        std::string paddedLine = wordVec[0];
+    }
+
+    void paddingSingleLineEvenly(
+        const std::vector<std::string>& wordVec, const int& maxWidth, std::string& paddedLine) {
+        // Only one word
+        if (wordVec.size() == 1) {
+            paddedLine = wordVec[0] + std::string(maxWidth - wordVec[0].size(), ' ');
+            return;
+        }
+        // More than one words
+        int spacingWidth = maxWidth;
+        for (int i = 0; i < wordVec.size(); ++i) {
+            spacingWidth -= wordVec[i].size();
+        }
+        int baseSpacingWidth = spacingWidth / (wordVec.size() - 1);
+        int extraSpacingWidth = spacingWidth % (wordVec.size() - 1);
+        paddedLine = wordVec[0];
+
+        std::string baseSpacing = std::string(baseSpacingWidth, ' ');
         for (int i = 1; i < wordVec.size(); ++i) {
-            paddedLine.append(SPACE);
+            if (extraSpacingWidth-- > 0) { paddedLine.append(" "); }
+            paddedLine.append(baseSpacing);
             paddedLine.append(wordVec[i]);
         }
-        return paddedLine;
+    }
+
+    void paddingSingleLineLeftJustified(
+        const std::vector<std::string>& wordVec, const int& maxWidth, std::string& paddedLine) {
+        // Only one word
+        if (wordVec.size() == 1) {
+            paddedLine = wordVec[0] + std::string(maxWidth - wordVec[0].size(), ' ');
+            return;
+        }
+        // More than one words
+        int spacingWidth = maxWidth - wordVec[0].size();
+        paddedLine = wordVec[0];
+        for (int i = 1; i < wordVec.size(); ++i) {
+            paddedLine.append(" ");
+            paddedLine.append(wordVec[i]);
+            spacingWidth -= (wordVec[i].size() + 1);
+        }
+        paddedLine.append(std::string(spacingWidth, ' ') );
     }
 };
 // @lc code=end
 
+// n = words number
+// Time: O(n)
+// Space: O(n)

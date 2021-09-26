@@ -61,6 +61,33 @@ public:
         return maxDepth;
     }
 
+    // Alternative:
+    // int depthSumInverse(std::vector<NestedInteger>& nestedList) {
+    //     int startIndex = 0;
+    //     int levelWeightSum = 0;
+
+    //     while (startIndex < nestedList.size() ) {
+    //         int currSize = nestedList.size();
+    //         for (int i = startIndex; i < currSize; ++i) {
+    //             // Add integer elements to current level's sum
+    //             if (nestedList[i].isInteger() ) {
+    //                 levelWeightSum += nestedList[i].getInteger();
+    //             } else {
+    //             // Push back all elemetns in sub-list to the end
+    //                 std::vector<NestedInteger> subNestedList = nestedList[i].getList();
+    //                 for (int j = 0; j < subNestedList.size(); ++j) {
+    //                     nestedList.push_back(subNestedList[j]);
+    //                 }
+    //             }
+    //             // Update the next starting index
+    //             startIndex++;
+    //         }
+    //         // More shadow the integer stays, more times it will be accumulated
+    //         _sumWithWeight += levelWeightSum;
+    //     }
+    //     return _sumWithWeight;
+    // }
+
 private:
     int _sumWithWeight = 0;
     int _maxDepth = 0;

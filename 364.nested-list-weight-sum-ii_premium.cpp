@@ -32,8 +32,9 @@
 class Solution {
 public:
     int depthSumInverse(std::vector<NestedInteger>& nestedList) {
+        _maxDepth = getMaxDepth(nestedList, 1);
         stepDepthSumInverse(nestedList, 1);
-        return sumWithWeight;
+        return _sumWithWeight;
     }
 
     void stepDepthSumInverse(std::vector<NestedInteger>& nestedList, int currDepth) {
@@ -42,14 +43,32 @@ public:
         }
         for (int i = 0; i < nestedList.size(); ++i) {
             if (nestedList[i].isInteger() ) {
-                sumWithWeight += nestedList[i].getInteger() * currDepth;
-                std::cout << nestedList << " " << currDepth << std::endl;
+                _sumWithWeight += nestedList[i].getInteger() * (_maxDepth + 1 - currDepth);
+                // std::cout << nestedList << " " << currDepth << std::endl;
             } else {
                 stepDepthSumInverse(nestedList[i].getList(), currDepth + 1);
             }
         }
     }
 
+    int getMaxDepth(std::vector<NestedInteger>& nestedList, int currDepth) {
+        int maxDepth = currDepth;
+        for (int i = 0; i < nestedList.size(); ++i) {
+            if (!nestedList[i].isInteger()) {
+                maxDepth = std::max(maxDepth ,getMaxDepth(nestedList[i].getList(), currDepth + 1) );
+            }
+        }
+        return maxDepth;
+    }
+
 private:
-    int sumWithWeight = 0;
+    int _sumWithWeight = 0;
+    int _maxDepth = 0;
 };
+
+// Runtime: 4 ms, faster than 47.45% of C++ online submissions for Nested List Weight Sum II.
+// Memory Usage: 8.8 MB, less than 95.88% of C++ online submissions for Nested List Weight Sum II.
+
+// n = element number
+// Time: O(n)
+// Space: O(n)

@@ -1,12 +1,15 @@
+#include <iostream>
+#include <vector>
+
 class Solution {
 public:
-    vector<vector<int>> getFactors(int n) {
-        vector<int> currCombination;
+    std::vector<std::vector<int>> getFactors(int n) {
+        std::vector<int> currCombination;
         stepGetFactors(n, currCombination) ;
         return allCombinations;
     }
     
-    void stepGetFactors(int n, vector<int>& currCombination) { 
+    void stepGetFactors(int n, std::vector<int>& currCombination) { 
         for (int i = 2; i * i <= n; ++i) {
             if (n % i == 0 && (currCombination.empty() || i >= currCombination.back() )) {
                 currCombination.push_back(i);
@@ -14,13 +17,13 @@ public:
                 allCombinations.push_back(currCombination);
                 currCombination.pop_back(); // pop_back n/i
                 stepGetFactors(n / i, currCombination);
-                currCombination.pop_back(); // pop_aback n/11
+                currCombination.pop_back(); // pop_back i
             }
         }
     }
     
 private:
-    vector<vector<int> > allCombinations = {};
+    std::vector<std::vector<int> > allCombinations = { };
 };
 
 // n = input num

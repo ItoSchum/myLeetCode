@@ -69,20 +69,35 @@ class Solution {
 public:
     int maximumUnits(std::vector<std::vector<int>>& boxTypes, int truckSize) {
         std::sort(boxTypes.begin(), boxTypes.end(), prioritized);
+        
+        #ifdef DEBUG
+        for (auto boxType : boxTypes) {
+            std::cout << boxType[0] << "," << boxType[1] << " ";
+        }
+        std::cout << std::endl;
+        #endif
+
         int sizeSum = 0;
         int weightSum = 0;
         for (int i = 0; i < boxTypes.size(); ++i) {
-            if (boxTypes[i][0] > 0 && sizeSum < truckSize) {
+            while (boxTypes[i][0] > 0) {
                 sizeSum += 1;
+                boxTypes[i][0] -= 1;
                 weightSum += boxTypes[i][1];
+                // std::cout << "+=" << boxTypes[i][1] << " ";
+                if (sizeSum >= truckSize) { return weightSum; }
             }
         }
         return weightSum;
     }
 
-    bool prioritized(const std::vector<int>& vec1, const std::vector<int>& vec2) {
+private:
+    static bool prioritized(const std::vector<int>& vec1, const std::vector<int>& vec2) {
         return vec1[1] > vec2[1];
     }
 };
 // @lc code=end
 
+// n = size category number
+// Time: O(nlogn)
+// Space: O(1)

@@ -15,7 +15,7 @@ public:
             return results;
         }
         
-        // If a is not ZERO
+        // If a isnot ZERO
         double axis_x = - (double)b / (2 * a);
         unsigned int start_index = 0;
         unsigned int end_index = nums.size() - 1;

@@ -54,15 +54,16 @@ public:
     int countSubstrings(std::string s) {
         int palindromeCount = 0;
         for (unsigned int i = 0; i < s.size(); ++i) {
+            // For odd-length substring
             int left = i, right = i;
             while (left >= 0 && right < s.size() && s[left--] == s[right++]) {
                 palindromeCount++;
             }
 
+            // For even-length substring
             left = i - 1, right = i;
             while (left >= 0 && right < s.size() && s[left--] == s[right++]) {
                 palindromeCount++;
-                }
             }
         }
         return palindromeCount;

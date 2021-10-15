@@ -70,14 +70,15 @@ public:
     }
 
     // Backtracking solution
-    void stepCountArrangement(int n, int currNum, std::vector<bool> visitedMemo) {
-        if (currNum > n) {
+    void stepCountArrangement(int n, int pos, std::vector<bool> visitedMemo) {
+        if (pos > n) {
             validCount++;
+            return;
         }
         for (int i = 1; i <= n; ++i) {
-            if (visitedMemo[i] == false && (currNum % i == 0 || i % currNum == 0) ) {
+            if (visitedMemo[i] == false && (pos % i == 0 || i % pos == 0) ) {
                 visitedMemo[i] = true;
-                stepCountArrangement(n, currNum + 1, visitedMemo);
+                stepCountArrangement(n, pos + 1, visitedMemo);
                 visitedMemo[i] = false;
             }
         }

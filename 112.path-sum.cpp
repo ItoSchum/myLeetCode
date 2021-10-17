@@ -79,10 +79,10 @@ class Solution {
 public:
     bool hasPathSum(TreeNode* root, int targetSum) {
         this->_targetSum = targetSum;
-        return stepHasPathSum(root, 0);
+        return bfsHasPathSum(root, 0);
     }
     
-    bool stepHasPathSum(TreeNode* root, int currSum) {
+    bool bfsHasPathSum(TreeNode* root, int currSum) {
         if (root == nullptr) {
             return false;
         }
@@ -90,14 +90,18 @@ public:
         // If leaf node
         if (root->left == nullptr && root->right == nullptr) {
             if (currSum == _targetSum) { return true; }
-            return false;
+            return false; 
         }
-        // If not leaf node
-        return stepHasPathSum(root->left, currSum) || stepHasPathSum(root->right, currSum);
+        // Not leaf node
+        return bfsHasPathSum(root->left, currSum) || bfsHasPathSum(root->right, currSum);
     }
     
 private:
     int _targetSum;
 };
 // @lc code=end
+
+// n = node number
+// Time: O(n)
+// Space: O(1) 
 

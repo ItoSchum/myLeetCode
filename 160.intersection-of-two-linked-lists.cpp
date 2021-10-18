@@ -140,6 +140,17 @@ public:
             currNode = currNode->next;
         }
         return nullptr;
+
+        // Alternative soluton: Time: O(n + m), Space: O(1)
+        // ListNode* ptrA = headA;
+        // ListNode* ptrB = headB;
+        // while(ptrA != ptrB) {
+        //     if (ptrA != nullptr) { ptrA = ptrA->next; } 
+        //     else { ptrA = headB; }
+        //     if (ptrB != nullptr) { ptrB = ptrB->next; } 
+        //     else { ptrB = headA; }
+        // }
+        // return ptrA;
     }
 };
 // @lc code=end

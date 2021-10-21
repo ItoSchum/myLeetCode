@@ -144,7 +144,6 @@
 #include <unordered_map>
 // #include <numeric>
 
-
 struct hash_pair {
     template <class T1, class T2>
     size_t operator()(const std::pair<T1, T2>& p) const

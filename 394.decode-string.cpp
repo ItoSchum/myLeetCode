@@ -97,6 +97,54 @@ public:
     }
     
 };
+
+// Bloomberg Phone Interview version
+// using namespace std;
+
+// // "a2[bc]" --> "abcbc"
+// // "a2[bc3[d]]" --> "abcdddbcddd"
+
+// class Solution {
+// public:
+//     string decodeString(const string& inputStr) {
+//         int startIdx = 0;
+//         return stepDecode(inputStr, startIdx, 1);
+//     }
+    
+//     string stepDecode(const string& inputStr, int& itrIdx, int repeatTimes) {
+//         string resultStr;
+        
+//         while (itrIdx < inputStr.length() ) {
+//             char currChar = inputStr[itrIdx];
+            
+//             // add curr letter to output string
+//             if (isalpha(currChar) ) {
+//                 resultStr += currChar;   
+//             } 
+//             // recusively call itself, repeating substring and combine two parts
+//             else if ( isdigit(currChar) ) {
+//                 int dupCount = 0;
+//                 while (itrIdx < inputStr.size() && std::isdigit(inputStr[itrIdx]) ) {
+//                     dupCount = dupCount * 10 + (inputStr[itrIdx] - '0');
+//                     itrIdx++;
+//                 }
+//                 resultStr.append( stepDecode(inputStr, itrIdx, dupCount ) );
+//             } 
+//             // repeat when meeting closing bracket, return repeated sub-string
+//             else if ( currChar == ']' ) {
+//                 std::string repeatUnit = resultStr;
+//                 while (--repeatTimes) {
+//                     resultStr.append(repeatUnit);
+//                 }
+//                 return resultStr;
+//             }
+//             itrIdx++;
+//         }
+//         return resultStr;
+//     }
+    
+// };
+
 // @lc code=end
 
 // n = string length

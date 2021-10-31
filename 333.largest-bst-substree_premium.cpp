@@ -10,30 +10,59 @@
  * };
  */
 
+#include <iostream>
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+class SubtreeInfo {
+public:
+    // Constructors
+    SubtreeInfo(int minVal = INT_MAX, int maxVal = INT_MIN, int maxSize = 0) {
+        this->minVal = minVal;
+        this->maxVal = maxVal;
+        this->maxSize = maxSize;
+    }
+    // Attributes
+    int minVal, maxVal, maxSize;
+};
+
 class Solution {
 public:
     int largestBSTSubtree(TreeNode* root) {
-        return postOrderBSTSubtree(root);
+        return postOrderBSTSubtree(root).maxSize;
     }
     
-    unordered_map<std::string, int> postOrderBSTSubtree(TreeNode* root) {
-        unordered_map<std::string, int> returnValue = {
-            {"maxVal" : INT_MIN },
-            {"minVal" : INT_MAX },
-            {"size" : 0 }
+    SubtreeInfo postOrderBSTSubtree(TreeNode* root) {
+        // If nullptr node
+        if (root == nullptr) {
+            return SubtreeInfo();
         }
-        int rootCount = 0;
-        // if nullptr node
-        if (root->nullptr) {
-            return 0;
-        }
-        // otherwise, post-order traversal
-        int leftCount = postOrderBSTSubtree(root->left);
-        int rightCount = postOrderBSTSubtree(root->right);
+        // Otherwise, post-order traversal
+        SubtreeInfo leftInfo = postOrderBSTSubtree(root->left);
+        SubtreeInfo rightInfo = postOrderBSTSubtree(root->right);
         
-        if () {
-            
+        // Check for current node
+        // If left, right, current can be combined to a new BST
+        if (root->val > leftInfo.maxVal && root->val < rightInfo.minVal) {
+            return SubtreeInfo(
+                std::min(root->val, leftInfo.minVal), 
+                std::max(root->val, rightInfo.maxVal), 
+                leftInfo.maxSize + rightInfo.maxSize + 1);
         }
-        
+        // Otherwise return an info which let its parent cannot be a BST
+        else {
+            return SubtreeInfo(INT_MIN, INT_MAX, std::max(leftInfo.maxSize, rightInfo.maxSize) );
+        }
     }
 };
+
+// n = node number
+// Time: O(n)
+// Space: O( log(n) ), worst case O(n)

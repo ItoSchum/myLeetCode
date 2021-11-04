@@ -105,39 +105,34 @@
 class Solution {
 public:
     std::vector<std::vector<int> > verticalTraversal(TreeNode* root) {
-        // pre-order traverse tree
+        // extract the values
         preorderTraversal(root, 0, 0);
-        
-        // extract output vector 
+        // sort and store values
         std::vector<std::vector<int> > results;
-        
-        std::map<int, std::map<int, std::vector<int>> >::iterator colItr;
-        for (colItr = coordToNodes.begin(); colItr != coordToNodes.end(); ++colItr) {
-        
-            std::map<int, std::vector<int> >::iterator rowItr;
-            std::vector<int> vals;
-            for (rowItr = colItr->second.begin(); rowItr != colItr->second.end(); ++rowItr) {
-                std::sort(rowItr->second.begin(), rowItr->second.end() );
-                vals.insert(vals.end(), rowItr->second.begin(), rowItr->second.end() );
+        for (auto& valsByCol : _verticalMap) {
+            std::vector<int> sameColVals;
+            for (auto& valsByRow : valsByCol.second) {
+                std::sort(valsByRow.second.begin(), valsByRow.second.end() );
+                sameColVals.insert(sameColVals.end(), valsByRow.second.begin(), valsByRow.second.end() );
             }
-            results.push_back(vals);
+            results.push_back(sameColVals);
         }
         return results;
     }
-
-    void preorderTraversal(TreeNode* root, int row, int col) {
-        // if empty
+    
+    void preorderTraversal(TreeNode* root, int col, int row) {
+        // Error checking, if current node is nullptr
         if (root == nullptr) {
             return;
         }
-        // pre-order traversal
-        coordToNodes[col][row].push_back(root->val);
-        preorderTraversal(root->left, row + 1, col - 1);
-        preorderTraversal(root->right, row + 1, col + 1);
+        // Otherwise, pushing back the value of current to map
+        _verticalMap[col][row].push_back(root->val);
+        preorderTraversal(root->left, col - 1, row + 1);
+        preorderTraversal(root->right, col + 1, row + 1);
     }
-
+    
 private:
-    std::map<int, std::map<int, std::vector<int> > > coordToNodes;
+    std::map<int, std::map<int, std::vector<int>> > _verticalMap;
 };
 
 // @lc code=end

@@ -151,6 +151,6 @@ private:
 
 // @lc code=end
 
-// n = node (var) number, m = query number
+// n =  number of input equations, m = query number
 // Time: O(n * m) 
 // Space: O(n)

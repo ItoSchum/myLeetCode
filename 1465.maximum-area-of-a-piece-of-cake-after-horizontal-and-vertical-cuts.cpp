@@ -83,17 +83,17 @@ public:
         std::sort(verticalCuts.begin(), verticalCuts.end() );
 
         // Find out max cut interval 
-        int maxHorizontal = 0;
+        int maxHorizontal = std::max(horizontalCuts[0], h - horizontalCuts[horizontalCuts.size() - 1]);
         for (unsigned int i = 0; i < horizontalCuts.size() - 1; ++i) {
             maxHorizontal = std::max(maxHorizontal, horizontalCuts[i + 1] - horizontalCuts[i] );
         }
 
-        int maxVertical = 0;
+        int maxVertical = std::max(verticalCuts[0], w - verticalCuts[verticalCuts.size() - 1]);
         for (unsigned int i = 0; i < verticalCuts.size() - 1; ++i) {
             maxVertical = std::max(maxVertical, verticalCuts[i + 1] - verticalCuts[i] );
         }
 
-        return (maxHorizontal * maxVertical) % (1000000007);
+        return ((long)maxHorizontal * (long)maxVertical) % 1000000007;
     }
 };
 // @lc code=end

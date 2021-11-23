@@ -49,30 +49,60 @@
 class Solution {
 public:
     std::vector<int> spiralOrder(std::vector<std::vector<int>>& matrix) {
-        int currStep = 0;
-        int stepCount = 0;
+        const int height = matrix.size();
+        const int width = matrix[0].size();
+        std::vector<int> resultSeq = { matrix[0][0] };
+        matrix[0][0] = VISITED;
         
         int currRow = 0;
         int currCol = 0;
-        std::vector<int> resultSeq;
-
-        while (stepCount < matrix.size() * matrix[0].size() ) {
-            if (matrix[currRow][currCol] == VISITED) {
-                currStep = (currStep + 1) % 4;
-                currRow += nextRowStep[currStep];
-                currCol += nextColStep[currStep];
+        int currDirection = 0;
+        int nextRow;
+        int nextCol;
+        
+        while (true) {
+            nextRow = currRow + nextRowStep[currDirection];
+            nextCol = currCol + nextColStep[currDirection];
+            // printf("[%d, %d] ", nextRow, nextCol);
+            
+            // Need to change direction
+            if (!isCoordValid(nextRow, nextCol, height, width) 
+                || matrix[nextRow][nextCol] == VISITED) {
+                currDirection = (currDirection + 1) % 4;
+                nextRow = currRow + nextRowStep[currDirection];
+                nextCol = currCol + nextColStep[currDirection];
+                // printf("Change to [%d, %d]\n", nextRow, nextCol);
                 
-                stepCount++;
+                // End of the spiral sequence
+                if (!isCoordValid(nextRow, nextCol, height, width) 
+                    || matrix[nextRow][nextCol] == VISITED) { 
+                    // printf("Still invalid [%d, %d]\n", nextRow, nextCol);
+                    break; 
+                }
             }
-            resultSeq.push_back(matrix[currRow][currCol]);
+            resultSeq.push_back(matrix[nextRow][nextCol]);
+            matrix[nextRow][nextCol] = VISITED;
+            currRow = nextRow;
+            currCol = nextCol;
         }
+        return resultSeq;
     }
 
 private:
-    const std::vector<int> nextRowStep = {0, -1,  0, 1};
-    const std::vector<int> nextColStep = {1,  0, -1, 0};
+    const std::vector<int> nextRowStep = {0, 1,  0, -1};
+    const std::vector<int> nextColStep = {1, 0, -1,  0};
     const int VISITED = 111;
-    
+
+    bool isCoordValid(int row, int col, const int height, const int width) {
+        return (row >= 0 && col >= 0 && row < height && col < width);
+    }
 };
 // @lc code=end
+
+// n = row number, m = column number
+// Time: O(n * m)
+// Space: O(1)
+
+// Runtime: 0 ms, faster than 100.00% of C++ online submissions for Spiral Matrix.
+// Memory Usage: 6.8 MB, less than 92.72% of C++ online submissions for Spiral Matrix.
 

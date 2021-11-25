@@ -58,6 +58,19 @@
 // @lc code=start
 #include <vector>
 
+// class Solution {
+// public:
+//     int maxSubArray(vector<int>& nums) {
+//         int currSum = nums[0];
+//         int maxSum = nums[0];
+//         for (unsigned int i = 1; i < nums.size(); ++i) {
+//             currSum = std::max(nums[i], currSum + nums[i]);
+//             maxSum = std::max(currSum, maxSum);
+//         }
+//         return maxSum;
+//     }
+// };
+
 class Solution {
 public:
     int maxSubArray(std::vector<int>& nums) {
